@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 import sqlite3
+from flask_cors import CORS
+
 
 app = Flask(__name__)
-
+CORS(app)
 # Função para iniciar o banco de dados
 def init_db():
     with sqlite3.connect('database.db') as conn:
@@ -76,6 +78,24 @@ def obter_livro(id):
             'imagem_url': livro[4]
         }
         return jsonify(livro_detalhes)
+    else:
+        return jsonify({'erro': 'Livro não encontrado'}), 404
+    
+
+@app.route('/livros/<int:id>', methods=['DELETE'])
+def deletar_livro(id):
+    with sqlite3.connect('database.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM livros WHERE id = ?", (id,))
+        livro = cursor.fetchone()
+
+    if livro:
+        with sqlite3.connect('database.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM livros WHERE id = ?", (id,))
+            conn.commit()
+
+        return jsonify({'mensagem': 'Livro deletado com sucesso'}), 200
     else:
         return jsonify({'erro': 'Livro não encontrado'}), 404
 
