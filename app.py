@@ -29,18 +29,18 @@ def doar():
     titulo = dados.get('titulo')
     categoria = dados.get('categoria')
     autor = dados.get('autor')
-    imagem_url = dados.get('imagem_url')
+    imagemUrl = dados.get('imagemUrl')
 
-    if not titulo or not categoria or not autor or not imagem_url:
+    if not titulo or not categoria or not autor or not imagemUrl:
         return jsonify({'erro': 'todos os campos sao obrigatorios'}), 400
 
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT INTO livros (titulo, categoria, autor, imagem_url)
+            INSERT INTO livros (titulo, categoria, autor, imagemUrl)
             VALUES (?, ?, ?, ?)
-        """, (titulo, categoria, autor, imagem_url))
+        """, (titulo, categoria, autor, imagemUrl))
 
         conn.commit()
 
@@ -55,7 +55,7 @@ def listar_livros():
 
     livros_lista = [
         {'id': livro[0], 'titulo': livro[1], 'categoria': livro[2],
-            'autor': livro[3], 'imagem_url': livro[4]}
+            'autor': livro[3], 'imagemUrl': livro[4]}
         for livro in livros
     ]
 
@@ -75,7 +75,7 @@ def obter_livro(id):
             'titulo': livro[1],
             'categoria': livro[2],
             'autor': livro[3],
-            'imagem_url': livro[4]
+            'imagemUrl': livro[4]
         }
         return jsonify(livro_detalhes)
     else:
