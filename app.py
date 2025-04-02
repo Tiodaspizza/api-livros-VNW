@@ -1,6 +1,6 @@
-from flask import Flask, request, jsonify
 import sqlite3
 from flask_cors import CORS
+from flask import jsonify
 
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ def init_db():
                          titulo TEXT NOT NULL,
                          categoria TEXT NOT NULL,
                          autor TEXT NOT NULL,
-                         imagem_url TEXT NOT NULL
+                         imagemUrl TEXT NOT NULL
                          )""")
         print("Banco de dados inicializado com sucesso! ✅")
 
